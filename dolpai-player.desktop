@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Dolpai Player
+GenericName=Video Player
+Comment=Futuristic cyberpunk video player powered by VLC
+Exec=python3 /opt/dolpai-player/main.py %F
+Icon=dolpai-player
+Terminal=false
+Categories=AudioVideo;Video;Player;
+MimeType=video/mp4;video/x-matroska;video/x-msvideo;video/quicktime;video/webm;video/x-flv;video/mpeg;video/ogg;
+Keywords=video;player;vlc;media;dolpai;
+StartupNotify=true
+StartupWMClass=dolpai-player

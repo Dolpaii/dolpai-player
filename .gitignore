@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+*.spec
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# User config / recent files (generated at runtime)
+~/.config/dolpai-player/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# AppImage / packaging artifacts
+*.AppImage
+*.deb
+AppDir/
+squashfs-root/
