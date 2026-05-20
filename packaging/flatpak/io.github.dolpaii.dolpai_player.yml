@@ -1,0 +1,70 @@
+app-id: io.github.dolpaii.dolpai_player
+runtime: org.freedesktop.Platform
+runtime-version: '23.08'
+sdk: org.freedesktop.Sdk
+
+# VLC is available via the multimedia extension
+add-extensions:
+  org.freedesktop.Platform.ffmpeg-full:
+    directory: lib/ffmpeg
+    version: '23.08'
+    add-ld-path: .
+
+command: dolpai-player
+
+finish-args:
+  # Video output
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --share=ipc
+  # Audio
+  - --socket=pulseaudio
+  # File access (videos anywhere on the system)
+  - --filesystem=home
+  # Hardware acceleration
+  - --device=dri
+
+modules:
+  # ── python-vlc bindings ──────────────────────────────────────────────
+  - name: python-vlc
+    buildsystem: simple
+    build-commands:
+      - pip3 install --prefix=/app --no-deps python-vlc==3.0.21203
+    sources:
+      - type: file
+        url: https://files.pythonhosted.org/packages/source/p/python-vlc/python-vlc-3.0.21203.tar.gz
+        sha256: placeholder-replace-with-real-sha256
+
+  # ── Dolpai Player ────────────────────────────────────────────────────
+  - name: dolpai-player
+    buildsystem: simple
+    build-commands:
+      # Install application files
+      - install -Dm755 main.py        /app/bin/dolpai-player-main
+      - install -Dm755 run-flatpak.sh /app/bin/dolpai-player
+      - cp -r ui      /app/lib/dolpai-player/
+      - cp -r player  /app/lib/dolpai-player/
+      - cp -r assets  /app/lib/dolpai-player/
+      - cp    version.py /app/lib/dolpai-player/
+
+      # Desktop file
+      - install -Dm644 packaging/flatpak/io.github.dolpaii.dolpai_player.desktop
+                       /app/share/applications/io.github.dolpaii.dolpai_player.desktop
+
+      # AppStream metadata
+      - install -Dm644 packaging/appstream/io.github.dolpaii.dolpai_player.metainfo.xml
+                       /app/share/metainfo/io.github.dolpaii.dolpai_player.metainfo.xml
+
+      # Icons
+      - for size in 16 22 24 32 48 64 96 128 256 512; do
+          install -Dm644
+            assets/icons/hicolor/${size}x${size}/apps/dolpai-player.png
+            /app/share/icons/hicolor/${size}x${size}/apps/io.github.dolpaii.dolpai_player.png;
+        done
+      - install -Dm644
+          assets/icons/hicolor/scalable/apps/dolpai-player.svg
+          /app/share/icons/hicolor/scalable/apps/io.github.dolpaii.dolpai_player.svg
+
+    sources:
+      - type: dir
+        path: ../..

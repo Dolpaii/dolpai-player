@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.dolpaii.dolpai_player</id>
+
+  <name>Dolpai Player</name>
+  <summary>Futuristic cyberpunk video player powered by VLC</summary>
+
+  <metadata_license>MIT</metadata_license>
+  <project_license>MIT</project_license>
+
+  <description>
+    <p>
+      Dolpai Player is a premium, futuristic video player for Linux with a
+      cyberpunk-inspired dark UI featuring neon cyan and blue glow accents.
+      Built with Python, PyQt6, and the VLC media engine for broad format support.
+    </p>
+    <p>Features:</p>
+    <ul>
+      <li>Plays MP4, MKV, AVI, MOV, WebM, FLV, TS and many more formats</li>
+      <li>Drag and drop video and subtitle files directly onto the window</li>
+      <li>External subtitle support (.srt, .ass, .vtt) and embedded track toggling</li>
+      <li>Recent videos sidebar with right-click context menu</li>
+      <li>Fullscreen mode with auto-hiding controls</li>
+      <li>Full keyboard shortcut support</li>
+      <li>Animated splash screen with custom SVG logo</li>
+      <li>Volume control with mute toggle</li>
+      <li>Skip forward/backward 10 seconds</li>
+    </ul>
+  </description>
+
+  <launchable type="desktop-id">io.github.dolpaii.dolpai_player.desktop</launchable>
+
+  <url type="homepage">https://github.com/Dolpaii/dolpai-player</url>
+  <url type="bugtracker">https://github.com/Dolpaii/dolpai-player/issues</url>
+  <url type="vcs-browser">https://github.com/Dolpaii/dolpai-player</url>
+
+  <developer id="io.github.dolpaii">
+    <name>Dolpaii</name>
+  </developer>
+
+  <provides>
+    <binary>dolpai-player</binary>
+  </provides>
+
+  <supports>
+    <control>pointing</control>
+    <control>keyboard</control>
+  </supports>
+
+  <recommends>
+    <display_length compare="ge">800</display_length>
+  </recommends>
+
+  <categories>
+    <category>AudioVideo</category>
+    <category>Video</category>
+    <category>Player</category>
+  </categories>
+
+  <keywords>
+    <keyword>video</keyword>
+    <keyword>player</keyword>
+    <keyword>vlc</keyword>
+    <keyword>media</keyword>
+    <keyword>cyberpunk</keyword>
+    <keyword>dolpai</keyword>
+  </keywords>
+
+  <mimetypes>
+    <mimetype>video/mp4</mimetype>
+    <mimetype>video/x-matroska</mimetype>
+    <mimetype>video/x-msvideo</mimetype>
+    <mimetype>video/quicktime</mimetype>
+    <mimetype>video/webm</mimetype>
+    <mimetype>video/x-flv</mimetype>
+    <mimetype>video/mpeg</mimetype>
+    <mimetype>video/ogg</mimetype>
+    <mimetype>video/3gpp</mimetype>
+  </mimetypes>
+
+  <releases>
+    <release version="1.0.0" date="2026-05-20">
+      <description>
+        <p>Initial public release of Dolpai Player.</p>
+        <ul>
+          <li>Full VLC-powered video playback</li>
+          <li>Futuristic cyberpunk dark UI with neon accents</li>
+          <li>Drag and drop support</li>
+          <li>Subtitle support (external and embedded)</li>
+          <li>Recent videos sidebar</li>
+          <li>Fullscreen with auto-hide controls</li>
+          <li>Complete keyboard shortcut set</li>
+        </ul>
+      </description>
+    </release>
+  </releases>
+
+  <content_rating type="oars-1.1"/>
+
+  <screenshots>
+    <screenshot type="default">
+      <caption>Dolpai Player main window with cyberpunk dark theme</caption>
+      <image type="source">https://raw.githubusercontent.com/Dolpaii/dolpai-player/main/assets/screenshots/main.png</image>
+    </screenshot>
+  </screenshots>
+</component>

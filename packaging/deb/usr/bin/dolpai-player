@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# System launcher for Dolpai Player (.deb install)
+exec python3 /usr/lib/dolpai-player/main.py "$@"

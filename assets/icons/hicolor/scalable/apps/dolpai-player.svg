@@ -1,0 +1,57 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#0f0f1a"/>
+      <stop offset="100%" stop-color="#0a0a0f"/>
+    </radialGradient>
+    <linearGradient id="dg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#0080ff"/>
+      <stop offset="100%" stop-color="#00d4ff"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#00d4ff" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#00d4ff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- App background -->
+  <rect width="512" height="512" rx="96" fill="url(#bg)"/>
+
+  <!-- Glow -->
+  <circle cx="256" cy="256" r="220" fill="url(#glow)"/>
+
+  <!-- Outer ring -->
+  <circle cx="256" cy="256" r="210" fill="none"
+          stroke="#00d4ff" stroke-width="3" stroke-opacity="0.35"/>
+
+  <!-- Main D letterform -->
+  <path d="M 130 100 L 130 412 L 230 412
+           C 360 412 400 340 400 256
+           C 400 172 360 100 230 100 Z"
+        fill="none" stroke="url(#dg)" stroke-width="22"
+        stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Inner D echo -->
+  <path d="M 180 158 L 180 354 L 228 354
+           C 316 354 348 308 348 256
+           C 348 204 316 158 228 158 Z"
+        fill="none" stroke="#00d4ff" stroke-width="6" stroke-opacity="0.3"
+        stroke-linejoin="round"/>
+
+  <!-- Dolphin wave arc -->
+  <path d="M 180 256 Q 230 196 280 256 Q 330 316 380 256"
+        fill="none" stroke="#00d4ff" stroke-width="11"
+        stroke-linecap="round" stroke-opacity="0.95"/>
+
+  <!-- Centre dot -->
+  <circle cx="256" cy="256" r="14" fill="#00d4ff" opacity="0.9"/>
+  <circle cx="256" cy="256" r="26" fill="none"
+          stroke="#00d4ff" stroke-width="3" opacity="0.3"/>
+
+  <!-- Cardinal ticks -->
+  <line x1="256" y1="42"  x2="256" y2="74"  stroke="#00d4ff" stroke-width="5" stroke-opacity="0.4"/>
+  <line x1="256" y1="438" x2="256" y2="470" stroke="#00d4ff" stroke-width="5" stroke-opacity="0.4"/>
+  <line x1="42"  y1="256" x2="74"  y2="256" stroke="#00d4ff" stroke-width="5" stroke-opacity="0.4"/>
+  <line x1="438" y1="256" x2="470" y2="256" stroke="#00d4ff" stroke-width="5" stroke-opacity="0.4"/>
+</svg>

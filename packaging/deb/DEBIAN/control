@@ -1,0 +1,24 @@
+Package: dolpai-player
+Version: 1.0.0
+Section: video
+Priority: optional
+Architecture: all
+Depends: python3 (>= 3.10),
+         python3-pyqt6 (>= 6.4),
+         python3-pyqt6.qtsvg,
+         python3-vlc,
+         vlc,
+         ffmpeg,
+         libxcb-cursor0
+Recommends: libxcb-xinerama0
+Maintainer: Dolpaii <https://github.com/Dolpaii>
+Homepage: https://github.com/Dolpaii/dolpai-player
+Description: Futuristic cyberpunk video player powered by VLC
+ Dolpai Player is a premium video player for Linux with a cyberpunk-inspired
+ dark UI featuring neon cyan and blue glow accents.
+ .
+ Built with Python, PyQt6, and the VLC media engine for broad format support.
+ Supports MP4, MKV, AVI, MOV, WebM, FLV, TS and many more formats.
+ .
+ Features drag and drop, subtitle support, recent videos sidebar,
+ fullscreen with auto-hide controls, and full keyboard shortcuts.

@@ -33,5 +33,13 @@ desktop.ini
 # AppImage / packaging artifacts
 *.AppImage
 *.deb
+*.tar.gz
 AppDir/
 squashfs-root/
+packaging/appimage/AppDir/
+packaging/appimage/appimagetool*
+packaging/deb/dolpai-player_*/
+release/
+
+# Generated icons (committed to repo, but exclude build artifacts)
+# assets/icons/ is committed — do NOT ignore it

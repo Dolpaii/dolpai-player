@@ -14,13 +14,15 @@ from PyQt6.QtCore import Qt
 
 from ui.splash import SplashScreen
 from ui.main_window import MainWindow
+from version import APP_NAME, APP_ID, VERSION, APP_AUTHOR
 
 
 def main():
     app = QApplication(sys.argv)
-    app.setApplicationName("Dolpai Player")
-    app.setApplicationVersion("1.0.0")
-    app.setOrganizationName("Dolpai")
+    app.setApplicationName(APP_NAME)
+    app.setApplicationVersion(VERSION)
+    app.setOrganizationName(APP_AUTHOR)
+    app.setOrganizationDomain("github.com/Dolpaii")
     # WM class used by the desktop file StartupWMClass
     app.setDesktopFileName("dolpai-player")
 

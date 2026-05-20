@@ -1,60 +1,58 @@
 # 🎬 Dolpai Player
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-1.0.0-00d4ff?style=for-the-badge&logo=github"/>
+  <img src="assets/icons/hicolor/128x128/apps/dolpai-player.png" width="96" alt="Dolpai Player Logo"/>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/version-1.0.0-00d4ff?style=for-the-badge"/>
   <img src="https://img.shields.io/badge/python-3.10%2B-00d4ff?style=for-the-badge&logo=python&logoColor=white"/>
   <img src="https://img.shields.io/badge/PyQt6-6.4%2B-00d4ff?style=for-the-badge"/>
   <img src="https://img.shields.io/badge/VLC-backend-00d4ff?style=for-the-badge&logo=vlcmediaplayer&logoColor=white"/>
-  <img src="https://img.shields.io/badge/platform-Ubuntu%20%2F%20Linux-00d4ff?style=for-the-badge&logo=linux&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Ubuntu-26.04%20LTS-00d4ff?style=for-the-badge&logo=ubuntu&logoColor=white"/>
   <img src="https://img.shields.io/badge/license-MIT-00d4ff?style=for-the-badge"/>
 </p>
 
 <p align="center">
-  <b>A futuristic, cyberpunk-styled video player for Linux — built with Python, PyQt6 and VLC.</b><br/>
-  Premium dark UI · Neon cyan/blue glow · Smooth animations · Drag & drop · Subtitle support
+  <b>A futuristic, cyberpunk-styled video player for Linux.</b><br/>
+  Built with Python · PyQt6 · VLC · FFmpeg
 </p>
 
 ---
 
 ## ✨ Features
 
-| Feature | Details |
-|---|---|
-| 🎥 Video playback | MP4, MKV, AVI, MOV, WMV, WebM, TS, FLV, and more |
-| ⏯ Controls | Play/Pause, Stop, Skip ±10s |
-| 📊 Progress bar | Click or drag to seek anywhere |
-| 🔊 Volume | Slider + mute toggle |
-| 🖥 Fullscreen | Auto-hides controls after 3s, shows on mouse move |
-| 🖱 Drag & Drop | Drop a video or subtitle file directly onto the window |
-| 💬 Subtitles | Load external .srt/.ass/.vtt or toggle embedded tracks |
-| 🕐 Recent videos | Sidebar with last 20 files, right-click context menu |
-| ⌨️ Keyboard shortcuts | Full keyboard control (see table below) |
-| 🚀 CLI open | `python3 main.py /path/to/video.mp4` |
+| | Feature | Details |
+|---|---|---|
+| 🎥 | Video playback | MP4, MKV, AVI, MOV, WMV, WebM, FLV, TS, and more |
+| ⏯ | Controls | Play/Pause, Stop, Skip ±10s |
+| 📊 | Progress bar | Click or drag to seek |
+| 🔊 | Volume | Slider + mute toggle |
+| 🖥 | Fullscreen | Auto-hides controls after 3s |
+| 🖱 | Drag & Drop | Drop video or subtitle files onto the window |
+| 💬 | Subtitles | External .srt/.ass/.vtt + embedded track toggling |
+| 🕐 | Recent videos | Sidebar with last 20 files, right-click menu |
+| ⌨️ | Shortcuts | Full keyboard control |
+| 🚀 | CLI | `dolpai-player /path/to/video.mp4` |
 
 ---
 
 ## ⌨️ Keyboard Shortcuts
 
-| Key | Action |
-|---|---|
-| `Space` | Play / Pause |
-| `←` / `→` | Skip ±10 seconds |
-| `↑` / `↓` | Volume +5 / −5 |
-| `M` | Mute / Unmute |
-| `F` | Toggle Fullscreen |
-| `Esc` | Exit Fullscreen |
-| `S` | Stop |
-| `C` | Toggle Subtitles |
-| `Ctrl+O` | Open File |
-| `Ctrl+R` | Toggle Recent Panel |
-| `Ctrl+Shift+S` | Load Subtitle File |
-| `Ctrl+Q` | Quit |
+| Key | Action | Key | Action |
+|---|---|---|---|
+| `Space` | Play / Pause | `F` | Toggle Fullscreen |
+| `←` | Skip back 10s | `Esc` | Exit Fullscreen |
+| `→` | Skip forward 10s | `S` | Stop |
+| `↑` | Volume +5 | `C` | Toggle Subtitles |
+| `↓` | Volume −5 | `Ctrl+O` | Open File |
+| `M` | Mute / Unmute | `Ctrl+Q` | Quit |
 
 ---
 
-## 🚀 Installation (Ubuntu / Debian)
+## 🚀 Installation
 
-### One-command install
+### Ubuntu / Debian (recommended)
 
 ```bash
 git clone https://github.com/Dolpaii/dolpai-player.git
@@ -62,18 +60,19 @@ cd dolpai-player
 bash install.sh
 ```
 
-This will:
-- Install system packages (`vlc`, `ffmpeg`, `python3-pyqt6`, `python3-vlc`)
-- Verify all Python imports work
-- Create a `.desktop` launcher so Dolpai Player appears in your app menu
-
-### Manual install
+### Manual
 
 ```bash
-sudo apt install python3 python3-pyqt6 python3-pyqt6.qtsvg python3-vlc vlc ffmpeg libxcb-cursor0
+sudo apt install python3-pyqt6 python3-pyqt6.qtsvg python3-vlc vlc ffmpeg libxcb-cursor0
 git clone https://github.com/Dolpaii/dolpai-player.git
 cd dolpai-player
 python3 main.py
+```
+
+### Verify dependencies
+
+```bash
+python3 scripts/check_deps.py
 ```
 
 ---
@@ -81,15 +80,25 @@ python3 main.py
 ## ▶️ Running
 
 ```bash
-# From the project folder
-python3 main.py
+python3 main.py                        # launch
+python3 main.py /path/to/video.mp4    # open file directly
+bash run.sh                            # launcher script
+```
 
-# Open a specific file directly
-python3 main.py /path/to/video.mp4
+---
 
-# Using the launcher script
-bash run.sh
-bash run.sh /path/to/video.mp4
+## 📦 Distribution Packages
+
+| Format | Build command | Install |
+|---|---|---|
+| `.deb` | `bash packaging/deb/build-deb.sh` | `sudo dpkg -i dolpai-player_1.0.0_all.deb` |
+| AppImage | `bash packaging/appimage/build-appimage.sh` | `chmod +x *.AppImage && ./DolpaiPlayer-*.AppImage` |
+| Flatpak | `flatpak-builder build packaging/flatpak/io.github.dolpaii.dolpai_player.yml` | `flatpak install` |
+| Snap | `snapcraft` (in `packaging/snap/`) | `snap install dolpai-player` |
+
+Build all at once:
+```bash
+bash scripts/build_release.sh
 ```
 
 ---
@@ -98,22 +107,35 @@ bash run.sh /path/to/video.mp4
 
 ```
 dolpai-player/
-├── main.py                  # Entry point — splash screen + main window
+├── main.py                        # Entry point
+├── version.py                     # Single source of version info
 ├── ui/
-│   ├── main_window.py       # Main window, layout, drag-drop, keyboard
-│   ├── controls.py          # Bottom controls bar widget
-│   ├── splash.py            # Startup splash screen with animated bar
-│   └── styles.py            # All QSS stylesheets & colour palette
+│   ├── main_window.py             # Main window, layout, drag-drop, keyboard
+│   ├── controls.py                # Bottom controls bar
+│   ├── splash.py                  # Startup splash screen
+│   └── styles.py                  # QSS stylesheets & colour palette
 ├── player/
-│   ├── vlc_player.py        # VLC backend wrapper (Qt signals-based)
-│   └── recent_videos.py     # JSON-backed recent files (~/.config/dolpai-player/)
+│   ├── vlc_player.py              # VLC backend (Qt signals)
+│   └── recent_videos.py           # JSON-backed recent files
 ├── assets/
-│   └── logo.py              # Embedded SVG logo — no external image files
-├── dolpai-player.desktop    # Linux desktop launcher entry
-├── install.sh               # One-shot Ubuntu/Debian installer
-├── run.sh                   # Quick launch script
-├── requirements.txt         # Python package list
-└── LICENSE                  # MIT
+│   ├── logo.py                    # Embedded SVG logo
+│   └── icons/hicolor/             # PNG icons 16px–512px + SVG
+├── packaging/
+│   ├── appstream/                 # AppStream metadata (Flathub/GNOME Software)
+│   ├── flatpak/                   # Flatpak manifest
+│   ├── snap/                      # Snapcraft config
+│   └── deb/                       # Debian package structure
+├── scripts/
+│   ├── check_deps.py              # Dependency validator
+│   ├── generate_icons.py          # Icon generator
+│   └── build_release.sh           # Full release builder
+├── dolpai-player.desktop          # Desktop launcher entry
+├── install.sh                     # One-command Ubuntu installer
+├── run.sh                         # Quick launch script
+├── CHANGELOG.md
+├── CONTRIBUTING.md
+├── LICENSE                        # MIT
+└── README.md
 ```
 
 ---
@@ -123,24 +145,29 @@ dolpai-player/
 - **Python 3.10+**
 - **PyQt6** — UI framework
 - **python-vlc** — VLC media engine bindings
-- **FFmpeg** — extended codec support via VLC
+- **FFmpeg** — extended codec support
 - **Optimised for Ubuntu / Debian Linux**
 
 ---
 
-## 🤖 Extending with AI Features
+## 🤖 Extending with AI
 
-The clean `player/` ↔ `ui/` separation makes it easy to add AI capabilities:
+The clean `player/` ↔ `ui/` separation makes AI features easy to add:
 
-```
-player/ai_subtitles.py    → auto-generate subtitles (Whisper)
-player/scene_detect.py    → hook into VLCPlayer.time_changed signal
-player/recommender.py     → extend recent_videos.py with smart suggestions
-main.py                   → add voice command listener
+```python
+# Auto-subtitles with Whisper
+# player/ai_subtitles.py
+from player.vlc_player import VLCPlayer
+# hook into VLCPlayer.media_opened signal
+
+# Smart recommendations
+# player/recommender.py
+from player.recent_videos import load_recent
+# analyse watch history, suggest next video
 ```
 
 ---
 
 ## 📄 License
 
-MIT © 2026 [Dolpaii](https://github.com/Dolpaii)
+MIT © 2026 [Dolpaii](https://github.com/Dolpaii) — see [LICENSE](LICENSE)

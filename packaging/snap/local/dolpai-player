@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Snap launcher for Dolpai Player
+exec python3 "$SNAP/lib/dolpai-player/main.py" "$@"
