@@ -8,19 +8,14 @@ description: |
   Built with Python, PyQt6, and the VLC media engine.
 
   FEATURES
-  • Plays MP4, MKV, AVI, MOV, WebM, FLV, TS and many more formats
-  • Drag and drop video and subtitle files onto the window
-  • External subtitle support (.srt, .ass, .vtt) and embedded track toggling
-  • Recent videos sidebar with right-click context menu
-  • Fullscreen mode with 3-second auto-hiding controls
-  • Full keyboard shortcut support (Space, arrows, F, M, C, S, Esc)
-  • Animated splash screen with custom neon logo
-  • Volume slider with mute toggle
-
-  KEYBOARD SHORTCUTS
-  Space — Play/Pause    F — Fullscreen
-  ← / → — Skip 10s     M — Mute
-  ↑ / ↓ — Volume       C — Subtitles
+  * Plays MP4, MKV, AVI, MOV, WebM, FLV, TS and many more formats
+  * Drag and drop video and subtitle files onto the window
+  * External subtitle support (.srt, .ass, .vtt) and embedded track toggling
+  * Recent videos sidebar with right-click context menu
+  * Fullscreen mode with 3-second auto-hiding controls
+  * Full keyboard shortcut support
+  * Animated splash screen with custom neon logo
+  * Volume slider with mute toggle
 
 grade: stable
 confinement: strict
@@ -31,66 +26,68 @@ issues: https://github.com/Dolpaii/dolpai-player/issues
 source-code: https://github.com/Dolpaii/dolpai-player
 website: https://github.com/Dolpaii/dolpai-player
 
-# ── Extension: pulls in Qt/Wayland/X11/font/theme support ─────────────
-# The gnome extension provides: desktop, desktop-legacy, wayland, x11,
-# opengl, gsettings, gtk-3-themes, icon-themes, sound-themes plugs
-# and sets up the correct environment variables automatically.
+# gnome extension provides: desktop, wayland, x11, opengl, gsettings,
+# gtk themes, icon themes, fonts — and sets QT_QPA_PLATFORM automatically
 extensions: [gnome]
 
 apps:
   dolpai-player:
-    command: bin/dolpai-player
+    command: bin/launcher
     plugs:
       - home
       - removable-media
       - audio-playback
       - unity7
     environment:
-      # Python path inside the snap
-      PYTHONPATH: $SNAP/lib/python3/dist-packages:$SNAP/usr/lib/python3/dist-packages
-      # VLC plugin path
+      PYTHONPATH: $SNAP/usr/lib/python3/dist-packages
       VLC_PLUGIN_PATH: $SNAP/usr/lib/x86_64-linux-gnu/vlc/plugins
-      # Prevent VLC from trying to open a display for its own window
       VLC_VERBOSE: "0"
+      XDG_CONFIG_HOME: $SNAP_USER_COMMON/.config
 
 parts:
-  # ── Application source ───────────────────────────────────────────────
-  dolpai-player-src:
+
+  # ── 1. App source files ──────────────────────────────────────────────
+  app:
     plugin: dump
-    source: .
+    source: ../..
     source-type: local
     organize:
-      main.py:    lib/dolpai-player/main.py
-      version.py: lib/dolpai-player/version.py
-      ui:         lib/dolpai-player/ui
-      player:     lib/dolpai-player/player
-      assets:     lib/dolpai-player/assets
+      main.py:    app/main.py
+      version.py: app/version.py
+      run.sh:     app/run.sh
+      ui:         app/ui
+      player:     app/player
+      assets:     app/assets
     stage:
-      - lib/dolpai-player/
+      - app/
     prime:
-      - lib/dolpai-player/
-    override-build: |
+      - app/
+    override-prime: |
       craftctl default
-      # Remove __pycache__ and .pyc files from the snap
-      find "$CRAFT_PART_INSTALL" -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
-      find "$CRAFT_PART_INSTALL" -name "*.pyc" -delete 2>/dev/null || true
+      find $CRAFT_PRIME/app -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
+      find $CRAFT_PRIME/app -name "*.pyc" -delete 2>/dev/null || true
 
-  # ── Launcher script ──────────────────────────────────────────────────
+  # ── 2. Launcher script ───────────────────────────────────────────────
   launcher:
-    plugin: dump
-    source: snap/local
-    source-type: local
-    organize:
-      dolpai-player: bin/dolpai-player
-    stage:
-      - bin/dolpai-player
+    plugin: nil
     override-build: |
-      craftctl default
-      chmod +x "$CRAFT_PART_INSTALL/bin/dolpai-player"
+      mkdir -p $CRAFT_PART_INSTALL/bin
+      cat > $CRAFT_PART_INSTALL/bin/launcher << 'EOF'
+      #!/bin/bash
+      export PYTHONPATH="$SNAP/usr/lib/python3/dist-packages"
+      export VLC_PLUGIN_PATH="$SNAP/usr/lib/x86_64-linux-gnu/vlc/plugins"
+      export VLC_VERBOSE=0
+      export XDG_CONFIG_HOME="${SNAP_USER_COMMON}/.config"
+      exec python3 "$SNAP/app/main.py" "$@"
+      EOF
+      chmod 755 $CRAFT_PART_INSTALL/bin/launcher
+    stage:
+      - bin/launcher
+    prime:
+      - bin/launcher
 
-  # ── Python runtime dependencies ──────────────────────────────────────
-  # Use stage-packages only (no pip) — avoids conflicts with system PyQt6
-  python-runtime:
+  # ── 3. Python runtime + PyQt6 + python-vlc ──────────────────────────
+  python-deps:
     plugin: nil
     stage-packages:
       - python3
@@ -98,28 +95,31 @@ parts:
       - python3-pyqt6.qtsvg
       - python3-vlc
 
-  # ── VLC media engine + codecs ────────────────────────────────────────
+  # ── 4. VLC engine + codecs ───────────────────────────────────────────
   vlc-engine:
     plugin: nil
     stage-packages:
       - vlc
-      - libvlc5
-      - libvlccore9
+      - vlc-bin
+      - vlc-data
       - vlc-plugin-base
       - vlc-plugin-video-output
-      - vlc-plugin-audio-output
-      - ffmpeg
+      - vlc-plugin-qt
+      - libvlc5
+      - libvlccore9
+      - libavcodec62
       - libavcodec-extra
+      - ffmpeg
+      - libpulse0
+      - libxcb1
       - libxcb-xinerama0
       - libxcb-cursor0
-      - libxcb1
       - libx11-6
-      - libpulse0
 
-  # ── Desktop integration ──────────────────────────────────────────────
-  desktop-assets:
+  # ── 5. Desktop integration ───────────────────────────────────────────
+  desktop-integration:
     plugin: dump
-    source: .
+    source: ../..
     source-type: local
     organize:
       dolpai-player.desktop: usr/share/applications/dolpai-player.desktop
