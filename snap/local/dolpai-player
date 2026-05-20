@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Dolpai Player — Snap launcher
+# Sets up the correct Python path and launches the app.
+
+# Snap environment variables available:
+#   $SNAP      — read-only snap content root
+#   $SNAP_USER_DATA — user's writable data dir (~/.local/share/dolpai-player)
+#   $SNAP_USER_COMMON — user's common writable dir (persists across updates)
+
+export PYTHONPATH="$SNAP/lib/dolpai-player:$SNAP/lib/python3/dist-packages:$SNAP/usr/lib/python3/dist-packages:$PYTHONPATH"
+export VLC_PLUGIN_PATH="$SNAP/usr/lib/x86_64-linux-gnu/vlc/plugins"
+export VLC_VERBOSE=0
+
+# Use snap's writable area for config instead of ~/.config
+export XDG_CONFIG_HOME="${SNAP_USER_COMMON}/.config"
+
+exec python3 "$SNAP/lib/dolpai-player/main.py" "$@"

@@ -1,0 +1,139 @@
+name: dolpai-player
+base: core24
+version: '1.0.0'
+summary: Futuristic cyberpunk video player powered by VLC
+description: |
+  Dolpai Player is a premium, futuristic video player for Linux with a
+  cyberpunk-inspired dark UI featuring neon cyan and blue glow accents.
+  Built with Python, PyQt6, and the VLC media engine.
+
+  FEATURES
+  • Plays MP4, MKV, AVI, MOV, WebM, FLV, TS and many more formats
+  • Drag and drop video and subtitle files onto the window
+  • External subtitle support (.srt, .ass, .vtt) and embedded track toggling
+  • Recent videos sidebar with right-click context menu
+  • Fullscreen mode with 3-second auto-hiding controls
+  • Full keyboard shortcut support (Space, arrows, F, M, C, S, Esc)
+  • Animated splash screen with custom neon logo
+  • Volume slider with mute toggle
+
+  KEYBOARD SHORTCUTS
+  Space — Play/Pause    F — Fullscreen
+  ← / → — Skip 10s     M — Mute
+  ↑ / ↓ — Volume       C — Subtitles
+
+grade: stable
+confinement: strict
+license: MIT
+
+contact: https://github.com/Dolpaii/dolpai-player/issues
+issues: https://github.com/Dolpaii/dolpai-player/issues
+source-code: https://github.com/Dolpaii/dolpai-player
+website: https://github.com/Dolpaii/dolpai-player
+
+# ── Extension: pulls in Qt/Wayland/X11/font/theme support ─────────────
+# The gnome extension provides: desktop, desktop-legacy, wayland, x11,
+# opengl, gsettings, gtk-3-themes, icon-themes, sound-themes plugs
+# and sets up the correct environment variables automatically.
+extensions: [gnome]
+
+apps:
+  dolpai-player:
+    command: bin/dolpai-player
+    plugs:
+      - home
+      - removable-media
+      - audio-playback
+      - unity7
+    environment:
+      # Python path inside the snap
+      PYTHONPATH: $SNAP/lib/python3/dist-packages:$SNAP/usr/lib/python3/dist-packages
+      # VLC plugin path
+      VLC_PLUGIN_PATH: $SNAP/usr/lib/x86_64-linux-gnu/vlc/plugins
+      # Prevent VLC from trying to open a display for its own window
+      VLC_VERBOSE: "0"
+
+parts:
+  # ── Application source ───────────────────────────────────────────────
+  dolpai-player-src:
+    plugin: dump
+    source: .
+    source-type: local
+    organize:
+      main.py:    lib/dolpai-player/main.py
+      version.py: lib/dolpai-player/version.py
+      ui:         lib/dolpai-player/ui
+      player:     lib/dolpai-player/player
+      assets:     lib/dolpai-player/assets
+    stage:
+      - lib/dolpai-player/
+    prime:
+      - lib/dolpai-player/
+    override-build: |
+      craftctl default
+      # Remove __pycache__ and .pyc files from the snap
+      find "$CRAFT_PART_INSTALL" -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
+      find "$CRAFT_PART_INSTALL" -name "*.pyc" -delete 2>/dev/null || true
+
+  # ── Launcher script ──────────────────────────────────────────────────
+  launcher:
+    plugin: dump
+    source: snap/local
+    source-type: local
+    organize:
+      dolpai-player: bin/dolpai-player
+    stage:
+      - bin/dolpai-player
+    override-build: |
+      craftctl default
+      chmod +x "$CRAFT_PART_INSTALL/bin/dolpai-player"
+
+  # ── Python runtime dependencies ──────────────────────────────────────
+  # Use stage-packages only (no pip) — avoids conflicts with system PyQt6
+  python-runtime:
+    plugin: nil
+    stage-packages:
+      - python3
+      - python3-pyqt6
+      - python3-pyqt6.qtsvg
+      - python3-vlc
+
+  # ── VLC media engine + codecs ────────────────────────────────────────
+  vlc-engine:
+    plugin: nil
+    stage-packages:
+      - vlc
+      - libvlc5
+      - libvlccore9
+      - vlc-plugin-base
+      - vlc-plugin-video-output
+      - vlc-plugin-audio-output
+      - ffmpeg
+      - libavcodec-extra
+      - libxcb-xinerama0
+      - libxcb-cursor0
+      - libxcb1
+      - libx11-6
+      - libpulse0
+
+  # ── Desktop integration ──────────────────────────────────────────────
+  desktop-assets:
+    plugin: dump
+    source: .
+    source-type: local
+    organize:
+      dolpai-player.desktop: usr/share/applications/dolpai-player.desktop
+      assets/icons/hicolor/256x256/apps/dolpai-player.png: usr/share/icons/hicolor/256x256/apps/dolpai-player.png
+      assets/icons/hicolor/128x128/apps/dolpai-player.png: usr/share/icons/hicolor/128x128/apps/dolpai-player.png
+      assets/icons/hicolor/64x64/apps/dolpai-player.png:   usr/share/icons/hicolor/64x64/apps/dolpai-player.png
+      assets/icons/hicolor/48x48/apps/dolpai-player.png:   usr/share/icons/hicolor/48x48/apps/dolpai-player.png
+      assets/icons/hicolor/scalable/apps/dolpai-player.svg: usr/share/icons/hicolor/scalable/apps/dolpai-player.svg
+      packaging/appstream/io.github.dolpaii.dolpai_player.metainfo.xml: usr/share/metainfo/io.github.dolpaii.dolpai_player.metainfo.xml
+    stage:
+      - usr/share/applications/
+      - usr/share/icons/
+      - usr/share/metainfo/
+    prime:
+      - usr/share/applications/
+      - usr/share/icons/
+      - usr/share/metainfo/
