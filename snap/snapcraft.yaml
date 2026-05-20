@@ -26,20 +26,21 @@ issues: https://github.com/Dolpaii/dolpai-player/issues
 source-code: https://github.com/Dolpaii/dolpai-player
 website: https://github.com/Dolpaii/dolpai-player
 
-# gnome extension provides: desktop, wayland, x11, opengl, gsettings,
-# gtk themes, icon themes, fonts — and sets QT_QPA_PLATFORM automatically
-extensions: [gnome]
-
 apps:
   dolpai-player:
+    # gnome extension provides: desktop, wayland, x11, opengl, gsettings,
+    # gtk themes, icon themes, fonts — sets QT_QPA_PLATFORM automatically
+    extensions: [gnome]
     command: bin/launcher
     plugs:
       - home
       - removable-media
       - audio-playback
-      - unity7
+      - wayland
+      - x11
+      - opengl
     environment:
-      PYTHONPATH: $SNAP/usr/lib/python3/dist-packages
+      PYTHONPATH: $SNAP/usr/lib/python3/dist-packages:$SNAP/lib/python3/dist-packages
       VLC_PLUGIN_PATH: $SNAP/usr/lib/x86_64-linux-gnu/vlc/plugins
       VLC_VERBOSE: "0"
       XDG_CONFIG_HOME: $SNAP_USER_COMMON/.config
